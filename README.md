@@ -18,4 +18,4 @@ as parts arrive and knowledge is gained. This is my first real electronics
 project so it may take a while if you're following along. I was just stoked to
 get the shift register working:
 
-![](http://cloud.mikeskalnik.com/image/1U440O25283F/binary.gif)
+![](https://f.cloud.github.com/assets/2546/2133182/88714a80-92be-11e3-959c-c7370c40f461.gif)
