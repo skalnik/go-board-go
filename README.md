@@ -15,4 +15,7 @@ things have taken off from there.
 
 This project is still very much work in progress. Updates will happen randomly
 as parts arrive and knowledge is gained. This is my first real electronics
-project so it may take a while if you're following along.
+project so it may take a while if you're following along. I was just stoked to
+get the shift register working:
+
+![](http://cloud.mikeskalnik.com/image/1U440O25283F/binary.gif)
