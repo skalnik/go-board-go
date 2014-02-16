@@ -55,7 +55,8 @@ void getSerial()
   }
 }
 
-void processCommand() {
+void processCommand()
+{
   if(!rowSet)
   {
     if(serialData > rowMax || serialData < rowMin)
