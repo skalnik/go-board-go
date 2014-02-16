@@ -62,7 +62,7 @@ void processCommand()
     if(serialData > rowMax || serialData < rowMin)
     {
       Serial.println("Row out of bounds!");
-      Serial.println("Send new row between " + String(rowMin) + "and" + String(rowMax));
+      Serial.println("Send new row between " + String(rowMin) + "-" + String(rowMax));
     }
     else
     {
