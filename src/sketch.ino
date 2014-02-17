@@ -66,7 +66,7 @@ void processCommand()
     }
     else
     {
-      serialRow = serialData;
+      serialRow = serialData - 1;
       rowSet = true;
       Serial.println("Row " + String(serialRow) + " selected");
     }
