@@ -16,21 +16,35 @@ things have taken off from there.
 A basic serial API is available which allows control of the LEDs and alerts when
 a button is pressed.
 
-To change LED states you need to first send the row (1-19) to change. Then send
-3 integers, 0-524287, representing LED state in Red Green and Blue for that row.
+There is a framed protocol to change LED states. Each frame starts with an
+`0xAD` constant, followed by the size of the message, then the message itself,
+with a checksum at the end.
 
-Rows count up from the bottom going from 1-19. The LED states refer to the LEDs
-with each bit representing an LED, which are big-endian on the left.
+| Offset |  Description    |
+|--------|-----------------|
+| 0x00   | Frame start - constant 0xAD |
+| 0x02   | Message length - 0x00-0xFF With the upper bound being unlikely |
+| 0x03...| Data. Starting at byte 0x03 and for N bytes |
+| 0x03+N | Checksum ([CRC8](https://github.com/whpthomas/GPX/blob/master/gpx.c#L633-L672) or something) |
 
-Example:
+Then treating the `message` part of the frame as
 
-    < 10
-    > Row 10 selected
-    < 314572 157286 78643
-    > Set state to {314572, 157286, 78643}
-    # Set the 10th to an RGBW repeating pattern starting on the left
+| Offset | Description |
+|--------|-------------|
+| 0x00   | Operation   |
+| 0x01+  | Args        |
 
-For the current prototype limits are 1-4 and only blue is controllable (state 0-15).
+Potentially using something like this to set an individual LED to red at `(5, 5)`
+
+| Offset | Value | Description |
+|--------|-------|----------------|
+| 0x00   | 0xAD  | Start  |
+| 0x01   | 0x04  | Length of message |
+| 0x02   | 0x01  | Set LED State |
+| 0x03   | 0x05  | X position 5 |
+| 0x04   | 0x05  | Y position 5 |
+| 0x05   | 0x01  | Color value in LSB, 0x01 red, 0x02 green, 0x04 blue (OR for multiple) |
+| 0x06   | 0x??  | CRC8 checksum, or not, whatever. |
 
 ## WIP
 
