@@ -20,12 +20,12 @@ There is a framed protocol to change LED states. Each frame starts with an
 `0xAD` constant, followed by the size of the message, then the message itself,
 with a checksum at the end.
 
-| Offset |  Description    |
-|--------|-----------------|
-| 0x00   | Frame start - constant 0xAD |
-| 0x02   | Message length - 0x00-0xFF With the upper bound being unlikely |
-| 0x03...| Data. Starting at byte 0x03 and for N bytes |
-| 0x03+N | Checksum ([CRC8](https://github.com/whpthomas/GPX/blob/master/gpx.c#L633-L672) or something) |
+| Offset  | Description                                                    |
+|---------|----------------------------------------------------------------|
+| 0x00    | Frame start - constant 0xAD                                    |
+| 0x02    | Message length - 0x00-0xFF With the upper bound being unlikely |
+| 0x03... | Data. Starting at byte 0x03 and for N bytes                    |
+| 0x03+N  | CRC8 Checksum                                                  |
 
 Then treating the `message` part of the frame as
 
@@ -34,17 +34,27 @@ Then treating the `message` part of the frame as
 | 0x00   | Operation   |
 | 0x01+  | Args        |
 
-Potentially using something like this to set an individual LED to red at `(5, 5)`
+The only supported message is Set LED State, which takes the location of the LED
+in X then Y coordinates, and then the color value of the LED:
 
-| Offset | Value | Description |
-|--------|-------|----------------|
-| 0x00   | 0xAD  | Start  |
-| 0x01   | 0x04  | Length of message |
-| 0x02   | 0x01  | Set LED State |
-| 0x03   | 0x05  | X position 5 |
-| 0x04   | 0x05  | Y position 5 |
-| 0x05   | 0x01  | Color value in LSB, 0x01 red, 0x02 green, 0x04 blue (OR for multiple) |
-| 0x06   | 0x??  | CRC8 checksum, or not, whatever. |
+| Value | Description                    |
+|-------|--------------------------------|
+| 0x01  | Red                            |
+| 0x02  | Green                          |
+| 0x04  | Blue                           |
+| 0x??  | Or the above together for more |
+
+So setting the LED at (5,5) to Red would look something like this:
+
+| Offset  | Value  | Description                                                           |
+|---------|--------|-----------------------------------------------------------------------|
+| 0x00    | 0xAD   | Start                                                                 |
+| 0x01    | 0x04   | Length of message                                                     |
+| 0x02    | 0x01   | Set LED State                                                         |
+| 0x03    | 0x05   | X position 5                                                          |
+| 0x04    | 0x05   | Y position 5                                                          |
+| 0x05    | 0x01   | Color value in LSB, 0x01 red, 0x02 green, 0x04 blue (OR for multiple) |
+| 0x06    | 0x04   | CRC8 checksum                                                         |
 
 ## WIP
 
